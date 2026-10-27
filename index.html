@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wispcraft – Unity Tools</title>
+<meta name="description" content="Wispcraft makes deep, carefully tested tools for Unity: thumbnails, spring bones, 2D destruction, mesh deformers, GPU crowds, mesh painting, bullet patterns, procedural cities, device previews and localization.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>
+  @font-face { font-family: "Bold"; src: url("Montserrat-Italic.ttf"); font-weight: 100 900; font-style: italic; }
+  @font-face { font-family: "Bold"; src: url("Montserrat.ttf"); font-weight: 100 900; font-style: normal; }
+  :root { --bg: #3ea0f3; --ink: #0b1b3a; --hi: #9ad9ff; --yellow: #ffd23f; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { overflow-x: hidden; }
+  body {
+    min-height: 100vh; color: var(--ink); font: 500 18px/1.55 "Bold", "Segoe UI", system-ui, sans-serif;
+    background-color: var(--bg);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect x='8' y='8' width='64' height='64' rx='16' fill='none' stroke='%23ffffff' stroke-opacity='0.13' stroke-width='3'/%3E%3C/svg%3E");
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+  header { padding: 56px 0 24px; display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+  header .logo svg { width: clamp(84px, 14vw, 150px); height: auto; }
+  header .logo { filter: drop-shadow(0 8px 0 rgba(11, 27, 58, 0.35)); }
+  h1 {
+    font: italic 900 clamp(38px, 10.5vw, 132px)/0.9 "Bold", sans-serif; text-transform: uppercase; letter-spacing: -0.03em;
+    color: #fff; -webkit-text-stroke: 0.105em var(--ink); paint-order: stroke fill; transform: rotate(-3deg);
+    filter: drop-shadow(0 9px 0 rgba(11, 27, 58, 0.35));
+  }
+  .tagline {
+    display: inline-block; margin: 8px 0 40px; padding: 10px 18px; background: #fff; border: 4px solid var(--ink);
+    border-radius: 12px; font: italic 800 clamp(18px, 2.6vw, 26px)/1.2 "Bold", sans-serif; text-transform: uppercase;
+    transform: rotate(-1.5deg); box-shadow: 0 6px 0 rgba(11, 27, 58, 0.35); max-width: 100%;
+  }
+  h2 {
+    font: italic 900 clamp(34px, 6vw, 60px)/1 "Bold", sans-serif; text-transform: uppercase; color: var(--hi);
+    -webkit-text-stroke: 9px var(--ink); paint-order: stroke fill; margin: 28px 0 22px; transform: rotate(-2deg);
+  }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 22px; }
+  .card {
+    display: flex; gap: 18px; align-items: flex-start; background: #fff; border: 4px solid var(--ink); border-radius: 18px;
+    padding: 20px; box-shadow: 0 8px 0 rgba(11, 27, 58, 0.35);
+  }
+  .card .mark { flex: none; }
+  .card .mark svg { width: 64px; height: 64px; }
+  .card > div:last-child { min-width: 0; }
+  .card h3 { font: italic 900 clamp(20px, 2vw, 24px)/1.1 "Bold", sans-serif; text-transform: uppercase; letter-spacing: -0.5px; margin-bottom: 6px; }
+  @media (max-width: 420px) { .card { padding: 16px; gap: 14px; } .card .mark svg { width: 52px; height: 52px; } }
+  .card p { font-size: 16px; color: #26334f; }
+  .status {
+    display: inline-block; margin-top: 10px; padding: 4px 10px; border-radius: 8px; background: var(--yellow);
+    border: 3px solid var(--ink); font: italic 800 13px/1.2 "Bold", sans-serif; text-transform: uppercase;
+  }
+  .about { background: #fff; border: 4px solid var(--ink); border-radius: 18px; padding: 24px 26px; box-shadow: 0 8px 0 rgba(11, 27, 58, 0.35); }
+  .about p + p { margin-top: 12px; }
+  .about a, footer a { color: var(--ink); font-weight: 800; }
+  footer { padding: 46px 0 40px; color: #fff; font: italic 700 15px/1.6 "Bold", sans-serif; text-shadow: 0 2px 0 rgba(11, 27, 58, 0.35); }
+  footer a { color: #fff; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo"><svg width="150" height="150" viewBox="0 0 64 64" style="overflow:visible" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="58" height="58" rx="16" fill="#4b3fd8" stroke="#0b1b3a" stroke-width="3.5"/>
+      <ellipse cx="32" cy="43" rx="17" ry="13" fill="#8ff5e4" opacity="0.28"/>
+      <path d="M32 55 C21 55 15.5 47 17.5 38.5 C19.5 30 27 27 29 19 C30 15.5 29.5 12.5 28 10 C36 12 42 18.5 44.5 26.5 C46.5 33 47.5 39 46 44.5 C44 51.5 38.5 55 32 55 Z" fill="#7ef0dc" stroke="#0b1b3a" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M32.5 50 C26.5 50 23.5 45.5 25 40.5 C26.3 36 30.5 34.5 31.8 30 C35.5 32.5 39.5 36.5 39.5 41.5 C39.5 46.5 36.5 50 32.5 50 Z" fill="#ffffff"/>
+      <circle cx="30" cy="45" r="2.2" fill="#0b1b3a"/><circle cx="36.2" cy="45" r="2.2" fill="#0b1b3a"/>
+      <path d="M49 8.8 L50.456 12.544 L54.2 14 L50.456 15.456 L49 19.2 L47.544 15.456 L43.8 14 L47.544 12.544 Z" fill="#ffd23f" stroke="#0b1b3a" stroke-width="1.6" stroke-linejoin="round"/><path d="M14.5 18.4 L15.508000000000001 20.992 L18.1 22 L15.508000000000001 23.008 L14.5 25.6 L13.491999999999999 23.008 L10.9 22 L13.491999999999999 20.992 Z" fill="#ffd23f" stroke="#0b1b3a" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+      <h1>Wispcraft</h1>
+    </header>
+    <div class="tagline">Deep, carefully tested tools for Unity</div>
+
+    <h2>Our tools</h2>
+    <section class="grid">
+      <article class="card">
+        <div class="mark"><svg width="84" height="84" viewBox="0 0 64 64" style="overflow:visible" xmlns="http://www.w3.org/2000/svg">
+      <defs><clipPath id="site-glance-eye"><path d="M9 32 C18 14, 46 14, 55 32 C46 50, 18 50, 9 32 Z"/></clipPath></defs><rect x="3" y="3" width="58" height="58" rx="16" fill="#ffd23f" stroke="#0b1b3a" stroke-width="3.5"/>
+      <path d="M9 32 C18 14, 46 14, 55 32 C46 50, 18 50, 9 32 Z" fill="#fff"/>
+      <g clip-path="url(#site-glance-eye)"><circle cx="32" cy="32" r="11" fill="#3ea0f3" stroke="#0b1b3a" stroke-width="3"/>
+        <circle cx="32" cy="32" r="5.4" fill="#0b1b3a"/><circle cx="28.2" cy="28.2" r="2.6" fill="#fff"/><circle cx="35.6" cy="35" r="1.2" fill="#fff" opacity="0.9"/></g>
+      <path d="M9 32 C18 14, 46 14, 55 32 C46 50, 18 50, 9 32 Z" fill="none" stroke="#0b1b3a" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M9 32 C18 14, 46 14, 55 32" fill="none" stroke="#0b1b3a" stroke-width="6" stroke-linecap="round"/></svg></div>
+        <div>
+          <h3>Glance</h3>
+          <p>Live thumbnails and an icon studio for the Project window: see your models, materials, effects and UI at a glance.</p>
+          <span class="status">Coming soon to the Unity Asset Store</span>
+        </div>
+      </article>
+      <article class="card">
+        <div class="mark"><svg width="84" height="84" viewBox="0 0 64 64" style="overflow:visible" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="58" height="58" rx="16" fill="#ff6f91" stroke="#0b1b3a" stroke-width="3.5"/>
+      <path d="M22.5 15 C 22.5 29, 27 37, 38 44 C 45 48.5, 49 51, 50.5 55" fill="none" stroke="#0b1b3a" stroke-width="10" stroke-linecap="round"/>
+      <rect x="10.4" y="8.4" width="25.2" height="8.4" rx="4.2" fill="#fff" stroke="#0b1b3a" stroke-width="3"/>
+      <path d="M22.5 15 C 22.5 29, 27 37, 38 44 C 45 48.5, 49 51, 50.5 55" fill="none" stroke="#fff" stroke-width="4.6" stroke-linecap="round"/>
+      <circle cx="23.6" cy="27" r="5.4" fill="#fff" stroke="#0b1b3a" stroke-width="3"/><circle cx="30" cy="38.2" r="4.9" fill="#fff" stroke="#0b1b3a" stroke-width="3"/><circle cx="40.6" cy="45.6" r="4.4" fill="#fff" stroke="#0b1b3a" stroke-width="3"/><circle cx="50.5" cy="55" r="3.9" fill="#fff" stroke="#0b1b3a" stroke-width="3"/></svg></div>
+        <div>
+          <h3>SwayBone</h3>
+          <p>Spring bones for hair, skirts and tails that move the same at any frame rate, with a live preview in the editor.</p>
+          <span class="status">Coming soon to the Unity Asset Store</span>
+        </div>
+      </article>
+      <article class="card">
+        <div class="mark"><svg width="84" height="84" viewBox="0 0 64 64" style="overflow:visible" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="58" height="58" rx="16" fill="#ff8a2b" stroke="#0b1b3a" stroke-width="3.5"/>
+      <path d="M11 26.5 Q11 22 15.5 22 L22.5 22 L26.5 28.5 L30.5 24.5 L33 31.5 L41 33.5 L41 47.5 Q41 52 36.5 52 L15.5 52 Q11 52 11 47.5 Z" fill="#fff" stroke="#0b1b3a" stroke-width="3.2" stroke-linejoin="round"/>
+      <path d="M16 31 L16 47 L36 47" fill="none" stroke="#ffd9bf" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+      <path d="M33.5 14.5 L41.5 9 L44.5 16.5 L37.5 20 Z" fill="#fff" stroke="#0b1b3a" stroke-width="2.6" stroke-linejoin="round"/><path d="M46.5 21 L55.5 18 L53.5 27.5 Z" fill="#fff" stroke="#0b1b3a" stroke-width="2.6" stroke-linejoin="round"/><path d="M45 31 L50.5 30 L51 35.5 L45.5 36 Z" fill="#fff" stroke="#0b1b3a" stroke-width="2.6" stroke-linejoin="round"/></svg></div>
+        <div>
+          <h3>Smithereens</h3>
+          <p>2D destruction: carve, fracture and slice sprites and terrain, with colliders that follow every hole.</p>
+          <span class="status">Coming soon to the Unity Asset Store</span>
+        </div>
+      </article>
+      <article class="card">
+        <div class="mark"><svg width="84" height="84" viewBox="0 0 64 64" style="overflow:visible" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="58" height="58" rx="16" fill="#18bfb2" stroke="#0b1b3a" stroke-width="3.5"/>
+      <g transform="translate(27.50 51.00) rotate(0)">
+        <rect x="-11.5" y="-3.4" width="23" height="6.8" rx="2.4" fill="#fff" stroke="#0b1b3a" stroke-width="2.8"/>
+        <path d="M-7 0 L7 0" stroke="#ffd23f" stroke-width="2.2" stroke-linecap="round"/>
+      </g><g transform="translate(28.01 43.76) rotate(8)">
+        <rect x="-11.5" y="-3.4" width="23" height="6.8" rx="2.4" fill="#fff" stroke="#0b1b3a" stroke-width="2.8"/>
+        <path d="M-7 0 L7 0" stroke="#9ce8e0" stroke-width="2.2" stroke-linecap="round"/>
+      </g><g transform="translate(29.51 36.67) rotate(16)">
+        <rect x="-11.5" y="-3.4" width="23" height="6.8" rx="2.4" fill="#fff" stroke="#0b1b3a" stroke-width="2.8"/>
+        <path d="M-7 0 L7 0" stroke="#ffd23f" stroke-width="2.2" stroke-linecap="round"/>
+      </g><g transform="translate(32.00 29.85) rotate(24)">
+        <rect x="-11.5" y="-3.4" width="23" height="6.8" rx="2.4" fill="#fff" stroke="#0b1b3a" stroke-width="2.8"/>
+        <path d="M-7 0 L7 0" stroke="#9ce8e0" stroke-width="2.2" stroke-linecap="round"/>
+      </g><g transform="translate(35.40 23.44) rotate(32)">
+        <rect x="-11.5" y="-3.4" width="23" height="6.8" rx="2.4" fill="#fff" stroke="#0b1b3a" stroke-width="2.8"/>
+        <path d="M-7 0 L7 0" stroke="#ffd23f" stroke-width="2.2" stroke-linecap="round"/>
+      </g><g transform="translate(39.67 17.58) rotate(40)">
+        <rect x="-11.5" y="-3.4" width="23" height="6.8" rx="2.4" fill="#fff" stroke="#0b1b3a" stroke-width="2.8"/>
+        <path d="M-7 0 L7 0" stroke="#9ce8e0" stroke-width="2.2" stroke-linecap="round"/>
+      </g></svg></div>
+        <div>
+          <h3>WarpStack</h3>
+          <p>A stack of mesh deformers (bend, twist, wave, jelly and more) with live editor preview and scene handles.</p>
+          <span class="status">Coming soon to the Unity Asset Store</span>
+        </div>
+      </article>
+      <article class="card">
+        <div class="mark"><svg width="84" height="84" viewBox="0 0 64 64" style="overflow:visible" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="58" height="58" rx="16" fill="#c454ff" stroke="#0b1b3a" stroke-width="3.5"/>
+      <g transform="translate(19.5 31) scale(0.78)">
+      <path d="M-11 22 C-11 8 -6.5 3 0 3 C6.5 3 11 8 11 22 Z" fill="#f1dcff" stroke="#0b1b3a" stroke-width="3.72" stroke-linejoin="round"/>
+      <circle cx="0" cy="-5.5" r="6.6" fill="#f1dcff" stroke="#0b1b3a" stroke-width="3.72"/>
+    </g><g transform="translate(44.5 31) scale(0.78)">
+      <path d="M-11 22 C-11 8 -6.5 3 0 3 C6.5 3 11 8 11 22 Z" fill="#f1dcff" stroke="#0b1b3a" stroke-width="3.72" stroke-linejoin="round"/>
+      <circle cx="0" cy="-5.5" r="6.6" fill="#f1dcff" stroke="#0b1b3a" stroke-width="3.72"/>
+    </g><g transform="translate(32 33.5) scale(1)">
+      <path d="M-11 22 C-11 8 -6.5 3 0 3 C6.5 3 11 8 11 22 Z" fill="#fff" stroke="#0b1b3a" stroke-width="2.90" stroke-linejoin="round"/>
+      <circle cx="0" cy="-5.5" r="6.6" fill="#fff" stroke="#0b1b3a" stroke-width="2.90"/>
+    </g></svg></div>
+        <div>
+          <h3>Throng</h3>
+          <p>Thousands of animated characters played on the GPU, baked from your own rigs and clips.</p>
+          <span class="status">Coming soon to the Unity Asset Store</span>
+        </div>
+      </article>
+      <article class="card">
+        <div class="mark"><svg width="84" height="84" viewBox="0 0 64 64" style="overflow:visible" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="58" height="58" rx="16" fill="#1fbf73" stroke="#0b1b3a" stroke-width="3.5"/>
+      
+      <rect x="13" y="25" width="38" height="28" rx="4" fill="#fff" stroke="#0b1b3a" stroke-width="3.2"/>
+      <path d="M13 39.5 L51 39.5 M27 39.5 L27 53 M39 25 L39 39.5" stroke="#0b1b3a" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="M11 28 C11 20 18 16 26 17 C32 12 42 13 46 18 C52 18 54 24 53 29 L53 30 C50 30 49 32 49 35 C49 38.5 45 38.5 45 35 L45 31 C40 31 36 31 33.5 31 C33.5 35 33.5 41 29.5 41 C25.5 41 25.5 35 25.5 31 L19 31 C15.5 31 14.5 33 14.5 34 C12 34 11 31 11 28 Z" fill="#c3f24f" stroke="#0b1b3a" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M19 22 C22 19.5 26 19 29 20" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" opacity="0.85"/></svg></div>
+        <div>
+          <h3>Patina</h3>
+          <p>Paint moss, sand, snow and wetness onto your meshes without touching the mesh asset.</p>
+          <span class="status">Coming soon to the Unity Asset Store</span>
+        </div>
+      </article>
+      <article class="card">
+        <div class="mark"><svg width="84" height="84" viewBox="0 0 64 64" style="overflow:visible" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="58" height="58" rx="16" fill="#86e04a" stroke="#0b1b3a" stroke-width="3.5"/>
+      <circle cx="42.26" cy="26.50" r="3.10" fill="#fff" stroke="#0b1b3a" stroke-width="2.19"/>
+      <circle cx="42.26" cy="26.50" r="1.30" fill="#ff4f8b"/><circle cx="45.14" cy="38.71" r="3.52" fill="#fff" stroke="#0b1b3a" stroke-width="2.33"/>
+      <circle cx="45.14" cy="38.71" r="1.48" fill="#ff4f8b"/><circle cx="35.82" cy="49.82" r="3.94" fill="#fff" stroke="#0b1b3a" stroke-width="2.46"/>
+      <circle cx="35.82" cy="49.82" r="1.65" fill="#ff4f8b"/><circle cx="19.39" cy="48.98" r="4.36" fill="#fff" stroke="#0b1b3a" stroke-width="2.60"/>
+      <circle cx="19.39" cy="48.98" r="1.83" fill="#ff4f8b"/><circle cx="9.01" cy="33.77" r="4.78" fill="#fff" stroke="#0b1b3a" stroke-width="2.73"/>
+      <circle cx="9.01" cy="33.77" r="2.01" fill="#ff4f8b"/><circle cx="15.41" cy="14.42" r="5.20" fill="#fff" stroke="#0b1b3a" stroke-width="2.80"/>
+      <circle cx="15.41" cy="14.42" r="2.18" fill="#ff4f8b"/><circle cx="36.51" cy="7.08" r="5.62" fill="#fff" stroke="#0b1b3a" stroke-width="2.80"/>
+      <circle cx="36.51" cy="7.08" r="2.36" fill="#ff4f8b"/>
+      <circle cx="31" cy="33" r="9.5" fill="#fff" stroke="#0b1b3a" stroke-width="3.2"/>
+      <circle cx="31" cy="33" r="4.6" fill="#ff4f8b"/>
+      <circle cx="28.4" cy="30.4" r="1.7" fill="#fff"/></svg></div>
+        <div>
+          <h3>Barrage</h3>
+          <p>Bullet patterns and projectiles by the thousand, for shoot 'em ups and survivor-likes.</p>
+          <span class="status">Coming soon to the Unity Asset Store</span>
+        </div>
+      </article>
+      <article class="card">
+        <div class="mark"><svg width="84" height="84" viewBox="0 0 64 64" style="overflow:visible" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="58" height="58" rx="16" fill="#2c2f8f" stroke="#0b1b3a" stroke-width="3.5"/>
+      <circle cx="47.5" cy="16" r="6" fill="#ffd23f" stroke="#0b1b3a" stroke-width="2.2"/><circle cx="50.6" cy="13.6" r="5.2" fill="#2c2f8f"/><path d="M32 15 L32 8" stroke="#0b1b3a" stroke-width="2.8" stroke-linecap="round"/><rect x="11" y="29" width="13" height="23" rx="1.6" fill="#fff" stroke="#0b1b3a" stroke-width="2.8"/><rect x="14.0" y="33.0" width="2.6" height="2.6" rx="0.5" fill="#ffd23f"/><rect x="18.6" y="33.0" width="2.6" height="2.6" rx="0.5" fill="#b9c8ee"/><rect x="14.0" y="38.0" width="2.6" height="2.6" rx="0.5" fill="#ffd23f"/><rect x="18.6" y="38.0" width="2.6" height="2.6" rx="0.5" fill="#ffd23f"/><rect x="14.0" y="43.0" width="2.6" height="2.6" rx="0.5" fill="#b9c8ee"/><rect x="18.6" y="43.0" width="2.6" height="2.6" rx="0.5" fill="#ffd23f"/><rect x="25" y="15" width="14" height="37" rx="1.6" fill="#fff" stroke="#0b1b3a" stroke-width="2.8"/><rect x="28.0" y="19.0" width="2.6" height="2.6" rx="0.5" fill="#ffd23f"/><rect x="32.6" y="19.0" width="2.6" height="2.6" rx="0.5" fill="#ffd23f"/><rect x="28.0" y="24.0" width="2.6" height="2.6" rx="0.5" fill="#b9c8ee"/><rect x="32.6" y="24.0" width="2.6" height="2.6" rx="0.5" fill="#ffd23f"/><rect x="28.0" y="29.0" width="2.6" height="2.6" rx="0.5" fill="#ffd23f"/><rect x="32.6" y="29.0" width="2.6" height="2.6" rx="0.5" fill="#b9c8ee"/><rect x="28.0" y="34.0" width="2.6" height="2.6" rx="0.5" fill="#ffd23f"/><rect x="32.6" y="34.0" width="2.6" height="2.6" rx="0.5" fill="#b9c8ee"/><rect x="28.0" y="39.0" width="2.6" height="2.6" rx="0.5" fill="#ffd23f"/><rect x="32.6" y="39.0" width="2.6" height="2.6" rx="0.5" fill="#ffd23f"/><rect x="28.0" y="44.0" width="2.6" height="2.6" rx="0.5" fill="#b9c8ee"/><rect x="32.6" y="44.0" width="2.6" height="2.6" rx="0.5" fill="#ffd23f"/><rect x="40" y="34" width="13" height="18" rx="1.6" fill="#fff" stroke="#0b1b3a" stroke-width="2.8"/><rect x="43.0" y="38.0" width="2.6" height="2.6" rx="0.5" fill="#ffd23f"/><rect x="47.6" y="38.0" width="2.6" height="2.6" rx="0.5" fill="#ffd23f"/><rect x="43.0" y="43.0" width="2.6" height="2.6" rx="0.5" fill="#b9c8ee"/><rect x="47.6" y="43.0" width="2.6" height="2.6" rx="0.5" fill="#ffd23f"/><path d="M8 52.5 L56 52.5" stroke="#0b1b3a" stroke-width="3.2" stroke-linecap="round"/></svg></div>
+        <div>
+          <h3>Borough</h3>
+          <p>Procedural buildings and whole cities with lit windows and rooms behind them.</p>
+          <span class="status">Coming soon to the Unity Asset Store</span>
+        </div>
+      </article>
+      <article class="card">
+        <div class="mark"><svg width="84" height="84" viewBox="0 0 64 64" style="overflow:visible" xmlns="http://www.w3.org/2000/svg"><polygon points="32,3 57.1,17.5 57.1,46.5 32,61 6.9,46.5 6.9,17.5" fill="#ffb81c" stroke="#0b1b3a" stroke-width="3.5" stroke-linejoin="round"/><g transform="translate(32 33) rotate(9)">
+      <rect x="-12.5" y="-21" width="25" height="42" rx="6.5" fill="#fff" stroke="#0b1b3a" stroke-width="3"/>
+      <rect x="-9.6" y="-18.1" width="19.2" height="36.2" rx="4.2" fill="#8fd3ff"/>
+      <rect x="-3.4" y="-16.2" width="6.8" height="2.6" rx="1.3" fill="#0b1b3a"/>
+      <text x="0" y="2.5" text-anchor="middle" dominant-baseline="central" style="font-family:Bold,'Arial Black',sans-serif;font-style:italic;font-weight:900;font-size:25px" fill="#0b1b3a"
+      stroke="#fff" stroke-width="4.0" stroke-linejoin="round" paint-order="stroke">S</text>
+    </g></svg></div>
+        <div>
+          <h3>Screenwright</h3>
+          <p>See your game on every device at once and export every store screenshot size in one click.</p>
+          <span class="status">Coming soon to the Unity Asset Store</span>
+        </div>
+      </article>
+      <article class="card">
+        <div class="mark"><svg width="84" height="84" viewBox="0 0 64 64" style="overflow:visible" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="58" height="58" rx="16" fill="#ff5d73" stroke="#0b1b3a" stroke-width="3.5"/>
+      <path d="M 34 11 H 46 Q 53 11 53 18 V 25 Q 53 32 46 32
+      H 44 L 50 40 L 37 32 H 34 Q 27 32 27 25
+      V 18 Q 27 11 34 11 Z" fill="#ffd23f" stroke="#0b1b3a" stroke-width="3" stroke-linejoin="round"/><text x="40" y="21.5" text-anchor="middle" dominant-baseline="central" fill="#0b1b3a"
+      style="font-family:'Yu Gothic UI','Meiryo','Hiragino Sans',sans-serif;font-weight:900;font-size:15px">あ</text><path d="M 18 25 H 31 Q 38 25 38 32 V 40 Q 38 47 31 47
+      H 27 L 14 55 L 20 47 H 18 Q 11 47 11 40
+      V 32 Q 11 25 18 25 Z" fill="#fff" stroke="#0b1b3a" stroke-width="3" stroke-linejoin="round"/><text x="24.5" y="36.5" text-anchor="middle" dominant-baseline="central" fill="#0b1b3a"
+      style="font-family:Bold,'Arial Black',sans-serif;font-weight:900;font-size:19px">A</text></svg></div>
+        <div>
+          <h3>Parley</h3>
+          <p>Game localization with right-to-left text, plurals and spreadsheet sync.</p>
+          <span class="status">In development</span>
+        </div>
+      </article>
+    </section>
+
+    <h2>Support</h2>
+    <section class="about">
+      <p>Every tool ships with full C# source, a manual and demo scenes, and is tested on Unity 6 with the Built-in, URP and HDRP render pipelines.</p>
+      <p>Questions, bugs or ideas: write to <a href="mailto:wispcraft.tools@outlook.com">wispcraft.tools@outlook.com</a>. We answer every message.</p>
+    </section>
+
+    <footer>
+      © 2026 Wispcraft · Unity is a trademark of Unity Technologies; Wispcraft isn't affiliated with Unity Technologies.
+    </footer>
+  </div>
+</body>
+</html>
