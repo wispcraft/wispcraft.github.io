@@ -1,0 +1,67 @@
+/* The Barrage web demo page: a slim bar in the Wispcraft style (blue, ink outlines, Montserrat from the site's root)
+   over a canvas that fills the rest of the window. */
+@font-face { font-family: "Bold"; src: url("../../Montserrat-Italic.ttf"); font-weight: 100 900; font-style: italic; font-display: swap; }
+:root { --bg: #3ea0f3; --ink: #0b1b3a; --hi: #9ad9ff; --yellow: #ffd23f; --night: #070b18; --bar: 52px; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+html, body { height: 100%; overflow: hidden; overscroll-behavior: none; background: var(--night); }
+body {
+  display: flex; flex-direction: column; height: 100vh; height: 100dvh; color: var(--ink);
+  font: italic 800 16px/1.2 "Bold", "Segoe UI", system-ui, sans-serif;
+  -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;
+}
+#bar {
+  flex: none; height: calc(var(--bar) + env(safe-area-inset-top)); display: flex; align-items: center; gap: 12px;
+  padding: env(safe-area-inset-top) max(12px, env(safe-area-inset-right)) 0 max(12px, env(safe-area-inset-left));
+  background-color: var(--bg); border-bottom: 4px solid var(--ink);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect x='8' y='8' width='64' height='64' rx='16' fill='none' stroke='%23ffffff' stroke-opacity='0.13' stroke-width='3'/%3E%3C/svg%3E");
+}
+#home { flex: none; display: block; line-height: 0; filter: drop-shadow(0 3px 0 rgba(11, 27, 58, 0.35)); }
+#home img { width: 36px; height: 36px; }
+h1 {
+  flex: none; font: italic 900 27px/1 "Bold", "Segoe UI", system-ui, sans-serif; text-transform: uppercase; letter-spacing: -0.02em;
+  color: #fff; -webkit-text-stroke: 6px var(--ink); paint-order: stroke fill; white-space: nowrap;
+}
+h1 span { color: var(--hi); }
+#pick { margin-left: auto; display: flex; align-items: center; gap: 8px; min-width: 0; }
+#pick span { color: #fff; -webkit-text-stroke: 4px var(--ink); paint-order: stroke fill; text-transform: uppercase; }
+select {
+  min-width: 0; max-width: 46vw; font: inherit; font-size: 16px; color: var(--ink); background: #fff; cursor: pointer;
+  border: 3px solid var(--ink); border-radius: 10px; padding: 6px 10px; box-shadow: 0 3px 0 rgba(11, 27, 58, 0.35);
+}
+select:disabled { opacity: 0.7; cursor: default; }
+#full {
+  flex: none; width: 38px; height: 38px; display: grid; place-items: center; color: var(--ink); background: var(--yellow);
+  border: 3px solid var(--ink); border-radius: 10px; cursor: pointer; box-shadow: 0 3px 0 rgba(11, 27, 58, 0.35);
+}
+/* Unity's WebGL player reports no safe area, so the page keeps the canvas clear of a notch at the side and the home bar
+   itself (the bar above already clears the top). */
+#stage {
+  position: relative; flex: 1 1 auto; min-height: 0;
+  padding: 0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+canvas { display: block; width: 100%; height: 100%; background: var(--night); outline: none; touch-action: none; }
+#loading {
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+  color: #fff; font-size: 20px; text-transform: uppercase;
+}
+.track { width: min(380px, 70vw); height: 20px; border: 3px solid #fff; border-radius: 10px; overflow: hidden; }
+#fill { width: 0; height: 100%; background: var(--yellow); transition: width 0.2s; }
+#message { position: absolute; left: 0; right: 0; top: 0; padding: 10px; display: grid; gap: 8px; justify-items: center; pointer-events: none; }
+#message div { max-width: 640px; padding: 10px 14px; border: 3px solid var(--ink); border-radius: 10px; background: #fff; font-style: normal; font-weight: 600; text-transform: none; }
+#message .warning { background: var(--yellow); }
+#message .error { background: #ff8fa3; pointer-events: auto; }
+
+/* Phones held sideways: a thinner bar leaves the game more room. */
+@media (max-height: 500px) {
+  :root { --bar: 40px; }
+  h1 { font-size: 21px; -webkit-text-stroke-width: 5px; }
+  #home img { width: 28px; height: 28px; }
+  select { padding: 3px 8px; }
+  #full { width: 32px; height: 32px; }
+}
+@media (max-width: 560px) {
+  h1 span, #pick span { display: none; }
+  #bar { gap: 8px; }
+  select { max-width: 60vw; }
+}

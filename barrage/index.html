@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Barrage demo · Wispcraft</title>
+<meta name="description" content="Play the Barrage demo scenes in your browser: bullet patterns and projectiles by the thousand for Unity, by Wispcraft.">
+<link rel="icon" href="TemplateData/barrage.svg" type="image/svg+xml">
+<link rel="stylesheet" href="TemplateData/style.css">
+</head>
+<body>
+  <header id="bar">
+    <a id="home" href="../" title="Wispcraft: all our tools"><img src="TemplateData/barrage.svg" width="32" height="32" alt="Wispcraft"></a>
+    <h1>Barrage<span> demo</span></h1>
+    <label id="pick"><span>Scene</span>
+      <select id="scene" aria-label="Demo scene" disabled><option>Loading…</option></select>
+    </label>
+    <button id="full" type="button" title="Full screen" aria-label="Full screen" hidden>
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 9V3h6M15 3h6v6M21 15v6h-6M9 21H3v-6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </header>
+  <main id="stage">
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
+    <div id="loading">
+      <p>Loading Barrage…</p>
+      <div class="track"><div id="fill"></div></div>
+    </div>
+    <div id="message" hidden></div>
+  </main>
+  <script>
+    var canvas = document.querySelector("#unity-canvas");
+    var select = document.querySelector("#scene");
+    var full = document.querySelector("#full");
+    var message = document.querySelector("#message");
+
+    // Errors stay on the page; warnings go after five seconds.
+    function unityShowBanner(text, type) {
+      var line = document.createElement("div");
+      line.textContent = text;
+      line.className = type || "info";
+      message.appendChild(line);
+      message.hidden = false;
+      if (type != "error")
+        setTimeout(function () {
+          message.removeChild(line);
+          message.hidden = !message.children.length;
+        }, 5000);
+    }
+
+    // Called by the demo (WebDemo.jslib): the scenes in the build, and the scene that has opened.
+    window.webDemo = {
+      scenes: function (names) {
+        select.textContent = "";
+        names.forEach(function (name) {
+          var option = document.createElement("option");
+          option.value = option.textContent = name;
+          select.appendChild(option);
+        });
+        select.disabled = false;
+      },
+      loaded: function (name) {
+        select.value = name;
+        // The address names the scene, so a reload or a shared link opens it again.
+        var number = name.split(" ")[0];
+        var query = "?scene=" + encodeURIComponent(number);
+        if (location.search != query)
+          history.replaceState(null, "", location.pathname + query);
+      },
+    };
+    select.addEventListener("change", function () {
+      if (window.unityInstance)
+        window.unityInstance.SendMessage("WebDemo", "Load", select.value);
+      // Hand the keys back to the game (the arrow keys would otherwise change the menu).
+      select.blur();
+      canvas.focus();
+    });
+    canvas.addEventListener("contextmenu", function (e) { e.preventDefault(); });
+    canvas.addEventListener("pointerdown", function () { canvas.focus(); });
+
+    var buildUrl = "Build";
+    var config = {
+      arguments: [],
+      dataUrl: buildUrl + "/barrage.data.unityweb",
+      frameworkUrl: buildUrl + "/barrage.framework.js.unityweb",
+      codeUrl: buildUrl + "/barrage.wasm.unityweb",
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "Wispcraft",
+      productName: "Barrage Demo",
+      productVersion: "1.0",
+      showBanner: unityShowBanner,
+    };
+
+    var script = document.createElement("script");
+    script.src = buildUrl + "/barrage.loader.js";
+    script.onload = function () {
+      createUnityInstance(canvas, config, function (progress) {
+        document.querySelector("#fill").style.width = 100 * progress + "%";
+      }).then(function (instance) {
+        window.unityInstance = instance;
+        document.querySelector("#loading").hidden = true;
+        if (document.fullscreenEnabled || document.webkitFullscreenEnabled) {
+          full.hidden = false;
+          full.onclick = function () { instance.SetFullscreen(1); };
+        }
+        canvas.focus();
+      }).catch(function (error) {
+        document.querySelector("#loading").hidden = true;
+        unityShowBanner("The demo couldn't start: " + error, "error");
+      });
+    };
+    script.onerror = function () { unityShowBanner("The demo couldn't be downloaded. Please reload the page.", "error"); };
+    document.body.appendChild(script);
+  </script>
+</body>
+</html>
